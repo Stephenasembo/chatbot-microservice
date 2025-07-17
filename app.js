@@ -20,7 +20,13 @@ app.post('/', (req, res) => {
 app.post('/ai', async (req, res) => {
   const input = req.body.input;
   const response = await ai.generateResponse(input);
-  res.json(response);
+  if(response) {
+    return res.status(200).json({success: true, data: response})
+  }
+  return res.status(500).json({
+    success: false,
+    message: 'An internal error occured.'
+  })
 })
 app.listen(PORT, () => {
   console.log(`The app is live on port: ${PORT}`)
